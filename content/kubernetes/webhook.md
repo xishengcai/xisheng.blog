@@ -10,7 +10,12 @@ draft: true
 WebHook是一种HTTP回调： 某些条件下触发HTTP POST请求；通过HTTP POST发送简单的事件
 通知。一个基于web应用实现的WebHook会在特定事件发生时把消息发送给特定的URL.
 
-
+#### 开启参数
+```
+--enable-admission-plugins
+```
+#### 概念介绍
+#### MutatingWebhookConfiguration
 
 
 ### <span id="TLS">kubernetes TLS 通信</span>
