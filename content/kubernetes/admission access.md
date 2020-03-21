@@ -26,7 +26,7 @@ draft: false
 
 #### 客户端证书
 
-  每个kubernetes系统组件都在集群创建时签发了自身对应的客户端证书
+> 每个kubernetes系统组件都在集群创建时签发了自身对应的客户端证书
   controller-manager  system: kube-controller-manager
   scheduler                      system:kube-scheduler
   kube-proxy                   system-kube-proxy
