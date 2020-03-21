@@ -6,35 +6,39 @@ draft: false
 
 ### API 请求认证
 #### 认证流程
-Authentication: 请求用户是否为能够访问集群的合法用户
-Authorization: 用户是否有权限进行请求中的操作
-Admission Control: 请求是否安全合规
+- step1: Authentication 请求用户是否为能够访问集群的合法用户
+
+- step2: Authorization 用户是否有权限进行请求中的操作
+
+- step3: Admission Control 请求是否安全合规
 
 #### 证书位置
-X509认证:
-公钥: /etc/kubernetes/pki/ca.crt
-私钥: /etc/kubernetes/pki/ca.key
+> X509认证:
+  公钥: /etc/kubernetes/pki/ca.crt
+  私钥: /etc/kubernetes/pki/ca.key
 
 集群组件间通讯用证书都是由集群根CA签发
 
 在证书中有两个身份证凭证相关的重要字段:
-Comman Name(CN)：apiserver在认证过程中将其作为用户user
-Organization(O)：apiserver在认证过程中将其作为组(group)
+
+> Comman Name(CN)：apiserver在认证过程中将其作为用户user
+  Organization(O)：apiserver在认证过程中将其作为组(group)
 
 #### 客户端证书
-每个kubernetes系统组件都在集群创建时签发了自身对应的客户端证书
-controller-manager  system: kube-controller-manager
-scheduler                      system:kube-scheduler
-kube-proxy                   system-kube-proxy
-kubelet                           system:node:$(node-hostname)         system:nodes
+
+  每个kubernetes系统组件都在集群创建时签发了自身对应的客户端证书
+  controller-manager  system: kube-controller-manager
+  scheduler                      system:kube-scheduler
+  kube-proxy                   system-kube-proxy
+  kubelet                           system:node:$(node-hostname)         system:nodes
 
 #### 通过kubernetes　api　签发证书
-证书签发API:
-Kubernets 提供了证书签发的API:  certificates.k8s.io/v1beta1
-客户端证书的签发请求发送到API server
-签发请求会以csr资源模型的形式持久化
-新创建好的csr模型会保持pending的状态,直到有权限管理员对其approve
-一旦csr完成approved, 请求对应的证书即被签发
+  证书签发API:
+  Kubernets 提供了证书签发的API:  certificates.k8s.io/v1beta1
+  客户端证书的签发请求发送到API server
+  签发请求会以csr资源模型的形式持久化
+  新创建好的csr模型会保持pending的状态,直到有权限管理员对其approve
+  一旦csr完成approved, 请求对应的证书即被签发
 
 ```
 cat <<EOF | kubectl apply -f - 
@@ -88,8 +92,11 @@ metadata:
 ```
 
 ###　kubeconfig
+
 #### generate kubeconfig
+
 在本地进行kubeconfig 的配置
+
 - 生成证书和秘钥
 ```
 cat > admin-csr.json << EOF
@@ -189,10 +196,9 @@ subjects:
   kind: User/group/serviceAccount
 
 
-clusterRole 是针对allNamespaces
+>clusterRole 是针对allNamespaces
 role 是针对单个namespace的权限定义
 
-####　
 
 subjects: developer, kubectl, pods process, components
 
@@ -200,9 +206,7 @@ api resources: pods, nodes, services
 
 verbs: get, list, create, watch, patch, delete
 
-```
 
-```
 
 #### ClusterRole
 ```
@@ -242,13 +246,16 @@ subjects:
 ```
 
 #### Security Context的使用
-CVE-2019-5736
-ＲunTime　安全策略
+> 漏洞　CVE-2019-5736
+
+**ＲunTime　安全策略**
+
 - pod or container　set Security Context
 - Pod Secruity Policy
 - use admission controllers
   - "imagePolicyWebhook"
   - "AlwaysPullImages"
+
 
 SecurityContext -> runAsNonRoot
 SecurityContext -> Capabilities
