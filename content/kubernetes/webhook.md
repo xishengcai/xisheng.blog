@@ -9,7 +9,7 @@ draft: false
 > 4. [哪些插件是默认启用的](#哪些插件是默认启用的)
 > 5. [每个准入控制器的作用是什么](#每个准入控制器的作用是什么)
 > 6. [动态准入控制](#动态准入控制)
-> 7. [什么是 admission webhook](#什么是 admission webhook)
+> 7. [什么是 admission webhook](#webhook)
 
 ### 什么是准入控制插件
 
@@ -107,6 +107,33 @@ required
 - 确保启用 MutatingAdmissionWebhook 和 ValidatingAdmissionWebhook 控制器。 这里 是一组推荐的 admission 控制器，通常可以启用。
 
 - 确保启用了 admissionregistration.k8s.io/v1beta1 API。
+
+```yaml
+    - --proxy-client-cert-file=/etc/kubernetes/pki/front-proxy-client.crt
+    - --proxy-client-key-file=/etc/kubernetes/pki/front-proxy-client.key
+    - --requestheader-allowed-names=front-proxy-client
+    - --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt
+    - --requestheader-extra-headers-prefix=X-Remote-Extra-
+    - --requestheader-group-headers=X-Remote-Group
+    - --requestheader-username-headers=X-Remote-User
+    - --secure-port=6443
+    - --service-account-key-file=/etc/kubernetes/pki/sa.pub
+    - --service-cluster-ip-range=10.96.0.0/12
+    - --tls-cert-file=/etc/kubernetes/pki/apiserver.crt
+    - --tls-private-key-file=/etc/kubernetes/pki/apiserver.key
+    - --enable-admission-plugins=NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook
+```
+
+上面的enable-admission-plugins参数中带上了MutatingAdmissionWebhook和ValidatingAdmissionWebhook两个准入控制插件，如果没有的，需要添加上这两个参数，然后重启 apiserver。
+
+然后通过运行下面的命令检查集群中是否启用了准入注册 API：
+
+```shell
+[root@wyh ~]# kubectl api-versions |grep admission
+admissionregistration.k8s.io/v1beta1
+```
+
+![kubernetes API request lifecycle](https:/xisheng.vip/images/k8s-api-request-lifecycle.png)
 
 #### write admission webhook server
 
