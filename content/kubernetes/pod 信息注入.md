@@ -1,7 +1,7 @@
 ---
 title: "Pods 信息注入"
 date: 2020-3-25T16:08:36+08:00
-draft: true
+draft: false
 ---
 
 
@@ -9,8 +9,8 @@ draft: true
 
 |描述|Docker 字段名称|Kubernetes 字段名称|
 |---|---|---|
-|容器执行的命令	|Entrypoint	|command|
-|传给命令的参数	|Cmd|	args|
+|容器执行的命令|Entrypoint|command|
+|传给命令的参数|Cmd|args|
 
 如果要覆盖默认的 Entrypoint 与 Cmd，需要遵循如下规则：
 
