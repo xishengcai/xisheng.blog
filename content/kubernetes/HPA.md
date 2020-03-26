@@ -15,13 +15,14 @@ what is HPA
 
 > - 指标
 
-cpu, 自定义指标
-在 Kubernetes 1.6 支持了基于多个指标进行缩放。 你可以使用 autoscaling/v2beta2 API 来为 Horizontal Pod Autoscaler 指定多个指标。 Horizontal Pod Autoscaler 会跟据每个指标计算，并生成一个缩放建议。 幅度最大的缩放建议会被采纳。
+  cpu, 自定义指标
+  在 Kubernetes 1.6 支持了基于多个指标进行缩放。 你可以使用 autoscaling/v2beta2 API 来为 Horizontal Pod Autoscaler 指定多个指标。 Horizontal Pod Autoscaler 会跟据每个指标计算，并生成一个缩放建议。 幅度最大的缩放建议会被采纳。
 
 
 每个周期内，controller manager 根据每个 HorizontalPodAutoscaler 定义中指定的指标查询资源利用率。 controller manager 可以从 resource metrics API（每个pod 资源指标）和 custom metrics API（其他指标）获取指标。
 
 > - 周期
+
 由 controller manager 的 --horizontal-pod-autoscaler-sync-period 参数 指定周期（默认值为15秒）
 
 > - 算法
@@ -46,9 +47,9 @@ cpu, 自定义指标
 
 当使用 Horizontal Pod Autoscaler 管理一组副本缩放时， 有可能因为指标动态的变化造成副本数量频繁的变化，有时这被称为 *抖动*。
 
-1.6: --horizontal-pod-autoscaler-downscale-stabilization: 这个 kube-controller-manager 的参数表示缩容冷却时间。 即自从上次缩容执行结束后，多久可以再次执行缩容，默认时间是5分钟(5m0s)。
-
-1.12 不需要参数
+    1.6: --horizontal-pod-autoscaler-downscale-stabilization: 这个 kube-controller-manager 的参数表示缩容冷却时间。 即自从上次缩容执行结束后，多久可以再次执行缩容，默认时间是5分钟(5m0s)。
+    
+    1.12 不需要参数
 
 ### 操作实践
 
@@ -60,25 +61,22 @@ cpu, 自定义指标
   - 外部指标会使用 external.metrics.k8s.io API。可能由上面的用户指标适配器提供。
 - --horizontal-pod-autoscaler-use-rest-clients 参数设置为 true 或者不设置。 如果设置为 false，则会切换到基于 Heapster 的自动缩放，这个特性已经被弃用了。
 
-step1 deploy metric-server
-----
+**deploy metric-server**
+
 https://github.com/kubernetes-sigs/metrics-server
 
-step2 deploy one deployment
------
+**deploy one deployment**
 ```shell script
 kubectl run php-apache --image=k8s.gcr.io/hpa-example --requests=cpu=200m --expose --port=80
 ```
 
-step3 创建 Horizontal Pod Autoscaler
-----
+**创建 Horizontal Pod Autoscaler**
 ```shell script
 kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10
 kubectl get hpa
 ```
 
-step4 add workload
-----
+**add workload**
 ```shell script
 kubectl run -i --tty load-generator --image=busybox /bin/sh
 
