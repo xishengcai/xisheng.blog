@@ -10,12 +10,12 @@ Kubernetes 是一个云原生平台，但为了让 Kubernetes 能够更好地运
 版本的发布进度，将其从中解耦出来。由各云服务商独自实现其抽象出来的接口即可。
 于是在 Kubernetes v1.6，引入了cloud-controller-manager(CCM)项目。
 
-
 ### 开发CCM 云服务商需要实现哪些接口
 [cloudprovider.Interface](https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/cloud-provider/cloud.go)
 
 Interface
-```
+
+```go
 type Interface interface {
     //　可以通过client　和　kube-apiserver通信,　启动自定义控制器，任何从这里启动的goroutine都
     //  必须可以安全退出
@@ -47,14 +47,13 @@ type Interface interface {
 }
 ```
 
-
-```
+```go
 type InformerUser interface {
 	SetInformers(informerFactory informers.SharedInformerFactory)
 }
 ```
 
-```
+```go
 type LoadBalancer interface {
     // 通过传入service对象，获取云服务商的LB exists and its status
 	GetLoadBalancer(ctx context.Context, clusterName string, service *v1.Service) (status *v1.LoadBalancerStatus, exists bool, err error)
@@ -207,28 +206,104 @@ kuberentes 1.17
     - 生成ccm　默认配置文件对象
     - 解析启动命令行参数
     - 调用 k8s中的cloud-controller-manager.Run()
-/root/go/src/k8s.io/cloud-provider-openstack/cmd/openstack-cloud-controller-manager/main.go
-```go
-        // 获取ccm默认配置文件
-        s, err := options.NewCloudControllerManagerOptions()
-        ....
-        command := &cobra.Command{
-            Run: func(cmd *cobra.Command, args []string) {
-                .....
     
-                // 启动CCM, 会执行 node, route, service, pvLabel controller
-                if err := app.Run(c.Complete(), wait.NeverStop); err != nil {
-                    fmt.Fprintf(os.Stderr, "%v\n", err)
-                    os.Exit(1)
-                }
-            },
-        }
-            .....
-        if err := command.Execute(); err != nil {
-            fmt.Fprintf(os.Stderr, "error: %v\n", err)
-            os.Exit(1)
-        }
-    }
+```go
+package main
+
+import (
+	goflag "flag"
+	"k8s.io/apimachinery/pkg/util/wait"
+	"k8s.io/apiserver/pkg/server/healthz"
+	"k8s.io/cloud-provider-huawei/huawei"
+	"k8s.io/cloud-provider-huawei/pkg/version"
+	"k8s.io/component-base/cli/flag"
+	"k8s.io/component-base/logs"
+	_ "k8s.io/component-base/metrics/prometheus/restclient" // for client metric registration
+	_ "k8s.io/component-base/metrics/prometheus/version"    // for version metric registration
+	"k8s.io/component-base/version/verflag"
+	"k8s.io/klog"
+	"k8s.io/kubernetes/cmd/cloud-controller-manager/app"
+	"k8s.io/kubernetes/cmd/cloud-controller-manager/app/options"
+	_ "k8s.io/kubernetes/pkg/features" // add the kubernetes feature gates
+	utilflag "k8s.io/kubernetes/pkg/util/flag"
+	"net/http"
+	"os"
+
+	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
+)
+
+func init() {
+	mux := http.NewServeMux()
+	healthz.InstallHandler(mux)
+	version.Version = "1.17"
+}
+
+func main() {
+	// 获取ccm默认配置文件
+	s, err := options.NewCloudControllerManagerOptions()
+	if err != nil {
+		klog.Fatalf("unable to initialize command options: %v", err)
+	}
+
+	//　使用lease会报错, 需要继续探究
+	s.Generic.LeaderElection.ResourceLock = "endpoints"
+
+	// CLI命令行的golang库，也是一个生成程序应用和命令行文件的程序
+	// 在command.Run中完成config生成和ccm启动
+	command := &cobra.Command{
+		Use: "huawei cloud controller manager",
+		Long: `The Cloud controller manager is a daemon that embeds
+the cloud specific control loops shipped with Kubernetes.`,
+		Run: func(cmd *cobra.Command, args []string) {
+
+			// 如果有请求参数 --version 则打印kuberents　版本
+			verflag.PrintAndExitIfRequested()
+
+			// 打印所有命令flag and value
+			utilflag.PrintFlags(cmd.Flags())
+
+			// 验证KnownControllers key 是否包含了GenericControllerManagerConfiguration.Controllers中的所有控制器
+			//获取ccm　config object
+			c, err := s.Config(app.KnownControllers(), app.ControllersDisabledByDefault.List())
+			if err != nil {
+				klog.Error(os.Stderr, err)
+				os.Exit(1)
+			}
+
+			// 启动CCM, 会执行 node, route, service, pvLabel controller
+			if err := app.Run(c.Complete(), wait.NeverStop); err != nil {
+				klog.Error(os.Stderr, err)
+				os.Exit(1)
+			}
+		},
+	}
+
+	//　生成CLI默认启动参数对
+	fs := command.Flags()
+
+	//　将ccm config　的参数对　移入　CLI的启动　参数与对中
+	namedFlagSets := s.Flags(app.KnownControllers(), app.ControllersDisabledByDefault.List())
+	for _, f := range namedFlagSets.FlagSets {
+		fs.AddFlagSet(f)
+	}
+
+	pflag.CommandLine.SetNormalizeFunc(flag.WordSepNormalizeFunc)
+	pflag.CommandLine.AddGoFlagSet(goflag.CommandLine)
+	logs.InitLogs()
+	defer logs.FlushLogs()
+
+	klog.Infof("huawei cloud provider version: %s", version.Version)
+
+	//　省去从启动命令赋值的步骤
+	s.KubeCloudShared.CloudProvider.Name = huawei.ProviderName
+
+	// 执行cli启动命令
+	if err := command.Execute(); err != nil {
+		klog.Error(os.Stderr, err)
+		os.Exit(1)
+	}
+}
 ```
 
 - 3.启动所有控制器, 开始监听资源变化
@@ -246,7 +321,7 @@ func Run(c *cloudcontrollerconfig.CompletedConfig, stopCh <-chan struct{}) error
 	cloud, err := cloudprovider.InitCloudProvider(c.ComponentConfig.KubeCloudShared.CloudProvider.Name, c.ComponentConfig.KubeCloudShared.CloudProvider.CloudConfigFile)
     .....
 
-    // 启动4大控制器
+    // 定义启动控制器方法
     // newControllerInitializers()　返回一个map, 里面已经存放了node, route, service, pvLabel　controller
 	run := func(ctx context.Context) {
 		if err := startControllers(c, ctx.Done(), cloud, newControllerInitializers()); err != nil {
@@ -261,7 +336,7 @@ func Run(c *cloudcontrollerconfig.CompletedConfig, stopCh <-chan struct{}) error
 		RenewDeadline: c.ComponentConfig.Generic.LeaderElection.RenewDeadline.Duration,
 		RetryPeriod:   c.ComponentConfig.Generic.LeaderElection.RetryPeriod.Duration,
 		Callbacks: leaderelection.LeaderCallbacks{
-			OnStartedLeading: run,
+			OnStartedLeading: run, //启动控制器
 			OnStoppedLeading: func() {
 				klog.Fatalf("leaderelection lost")
 			},
@@ -273,9 +348,8 @@ func Run(c *cloudcontrollerconfig.CompletedConfig, stopCh <-chan struct{}) error
 }
 ```
 
-/root/go/src/k8s.io/cloud-provider-openstack/cmd/openstack-cloud-controller-manager/main.go
-
-ccm 4个控制器注册
+/root/go/pkg/mod/k8s.io/kubernetes@v1.17.4/cmd/cloud-controller-manager/app/controllermanager.go
+ccm 4个控制器
 ```go
 // line 139
 // initFunc is used to launch a particular controller.  It may run additional "should I activate checks".
@@ -421,80 +495,7 @@ func (lbaas *LbaasV2) EnsureLoadBalancer(ctx context.Context, clusterName string
 
 	return status, nil
 }
-
 ```
-### 自己动手写一个CCM插件
-main.go 服务启动入口程序
-```go
-func main() {
-	// 获取ccm默认配置文件
-	s, err := options.NewCloudControllerManagerOptions()
-	if err != nil {
-		klog.Fatalf("unable to initialize command options: %v", err)
-	}
-
-	//　使用lease会报错, 需要继续探究
-	s.Generic.LeaderElection.ResourceLock="endpoints"
-
-	// CLI命令行的golang库，也是一个生成程序应用和命令行文件的程序
-	// 在command.Run中完成config生成和ccm启动
-	command := &cobra.Command{
-		Use: "huawei cloud controller manager",
-		Long: `The Cloud controller manager is a daemon that embeds
-the cloud specific control loops shipped with Kubernetes.`,
-		Run: func(cmd *cobra.Command, args []string) {
-
-			// 如果有请求参数 --version 则打印kuberents　版本
-			verflag.PrintAndExitIfRequested()
-
-			// 打印所有命令flag and value
-			utilflag.PrintFlags(cmd.Flags())
-
-			// 获取ccm　config object
-			c, err := s.Config(KnownControllers(), ControllersDisabledByDefault.List())
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "%v\n", err)
-				os.Exit(1)
-			}
-
-			// 启动CCM, 会执行 node, route, service, pvLabel controller
-			if err := app.Run(c.Complete(), wait.NeverStop); err != nil {
-				fmt.Fprintf(os.Stderr, "%v\n", err)
-				os.Exit(1)
-			}
-		},
-	}
-
-	//　生成CLI默认启动参数对
-	fs := command.Flags()
-
-	//　将ccm config　的参数对　移入　CLI的启动　参数与对中
-	namedFlagSets := s.Flags(KnownControllers(), ControllersDisabledByDefault.List())
-	for _, f := range namedFlagSets.FlagSets {
-		fs.AddFlagSet(f)
-	}
-
-	pflag.CommandLine.SetNormalizeFunc(flag.WordSepNormalizeFunc)
-	pflag.CommandLine.AddGoFlagSet(goflag.CommandLine)
-	logs.InitLogs()
-	defer logs.FlushLogs()
-
-	klog.Infof("huawei cloud provider version: %s", version.Version)
-
-	//　省去从启动命令赋值的步骤
-	s.KubeCloudShared.CloudProvider.Name = huawei.ProviderName
-
-	// 执行cli启动命令
-	if err := command.Execute(); err != nil {
-		fmt.Fprintf(os.Stderr, "error: %v\n", err)
-		os.Exit(1)
-	}
-}
-```
-
-CCM注册, 见上文的启动流程中的注册代码
-
-CCM控制器注册,　见上文的
 
 ### 部署
 以下部署方式适用于基于openstack改造后的华为ccm
