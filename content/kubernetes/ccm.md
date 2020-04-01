@@ -625,4 +625,4 @@ spec:
 1. https://mp.weixin.qq.com/s/a_540yJ1EGVroJ9TpvYtPw
 
 作者简介:
-蔡锡生，　杭州朗澈科技有限公司k8s高级工程师
+蔡锡生，　杭州朗澈科技有限公司k8s工程师
