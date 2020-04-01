@@ -154,7 +154,7 @@ kuberentes 1.17
 
 启动流程
 
-- 1.项目启动后，先执行所有init方法，注册 getCloudProvider方法
+- 1.项目启动后，先执行所有init方法，注册 getCloudProvider方法（map[云服务商名称]创建cloudProvider方法）
 
 /root/go/src/k8s.io/cloud-provider-openstack/pkg/cloudprovider/providers/openstack/openstack.go
     
@@ -193,7 +193,7 @@ kuberentes 1.17
     
     // provider是一个map, 
     // key: 云服务商名称
-    // value: 通过配置文件获取cloudProvider object的方法
+    // value: 工厂方法，即创建CloudProvider的方法
     providers                = make(map[string]Factory)
     
     // Factory is a function that returns a cloudprovider.Interface.
@@ -205,7 +205,25 @@ kuberentes 1.17
 - 2.main 函数入口启动程序
     - 生成ccm　默认配置文件对象
     - 解析启动命令行参数
+        verflag.PrintAndExitIfRequested()
+        utilflag
+        pflag.CommandLine.SetNormalizeFunc
+        pflag.CommandLine.AddGoFlagSet
+        logs.InitLogs()
     - 调用 k8s中的cloud-controller-manager.Run()
+    - InitCloudProvider, err, nil, and clusterID　校验
+    - configz.New　不懂
+    - create HealthChecker
+    - create (安全和不安全)httpServer
+    - 定义controller启动函数
+    - 选择参数校验　--leader-elect　
+        false:
+            按顺序启动controller
+            select{}　程序阻塞
+        true:
+            append(healthCheck,NewLeaderHealthzAdaptor)
+            create lock(锁资源类型，namespace, name,corev1Client,coorinationv1Client,rlconfig)
+            try become the leader and start cloud controller manager loops
     
 ```go
 package main
@@ -307,11 +325,18 @@ the cloud specific control loops shipped with Kubernetes.`,
 ```
 
 - 3.启动所有控制器, 开始监听资源变化
-k8s.io/kubernetes/cmd/cloud-controller-manager/app/controllermanager.go
-调用cloud-controller-manager的Run 方法, 组要完成如下工作:
-    - 1.获取cloudProvider对象(就是已经实现了所有cloudprovider.Interface接口的对象)
-    - 2.启动　node, route, service, pvLabel　控制器
-    - 3.完成选主
+/root/go/pkg/mod/k8s.io/kubernetes@v1.17.4/cmd/cloud-controller-manager/app/core.go
+
+- cloud-node
+  - UpdateNodeStatus updates the node status, such as node addresses
+- cloud-node-lifecycle
+  - when you shutdown nodes, will delete node from cluster
+- service
+  - update loadbalancer
+- route
+  - update node cidr
+- pvController
+  - 已经从core中移除
 
 ```go
 // Run runs the ExternalCMServer.  This should never exit.
@@ -512,7 +537,6 @@ export ACCESS_KEY_ID= ...
 export ACCESS_KEY_SECRET= ....
 export ROUTER_ID= ...
 export REGION= ...
-export SUBNET_ID= ...
 go run ./cmd/cloud-controller-manager.go --kubeconfig=./kube.config -v 4
 ```
 
@@ -596,6 +620,7 @@ spec:
         node-role.kubernetes.io/master: ""
       hostNetwork: true
 ```
+
 参考文献:
 1. https://mp.weixin.qq.com/s/a_540yJ1EGVroJ9TpvYtPw
 
