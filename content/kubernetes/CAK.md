@@ -1,10 +1,24 @@
 ---
-title: "CAK"
-date: 2020-3-12T16:08:36+08:00
-draft: true
+title: "CKA Certified Kubernetes Administrator"
+date: 2020-4-21T16:08:36+08:00
+draft: false
 ---
 
-# kubectl 使用
+# 考试范围
+- Application Lifecycle Management 8%
+- Installation, Configuration & Validation 12%
+- Core Concepts 19%
+- Networking 11%
+- Scheduling 5%
+- Security 12%
+- Cluster Maintenance 11%
+- Logging / Monitoring 5%
+- Storage 7%
+- Troubleshooting 10%
+
+
+
+# 常识备忘录
 ## 自动命令补全
 ```
 yum install bash-completion 
