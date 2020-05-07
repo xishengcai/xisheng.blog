@@ -4,6 +4,12 @@ date: 2020-4-21T16:08:36+08:00
 draft: false
 ---
 
+# [付钱，注册，预约]（https://training.linuxfoundation.cn/faq#14）
+- 购买 认证考试 https://training.linuxfoundation.cn/
+- 用上面买到的劵注册考试， 学员请到 https://identity.linuxfoundation.org/ 创建Linux Foundation ID（LFID）。
+- 到PSI考试中心网站 www.examslocal.com/linuxfoundation 预约考试
+- 顺便吐个槽：还是中国的网站友好。
+
 # 考试范围
 - Application Lifecycle Management 8%
 - Installation, Configuration & Validation 12%
@@ -47,6 +53,10 @@ cn-hongkong.i-j6cfgd2b4spu7o30og89   Ready    master   146m   v1.18.0
 # etcd 备份
 ```
 ETCDCTL_API=3 etcdctl --endpoints $ENDPOINT snapshot save /var/lib/etcd/snapshot-20200312.db
+
+find / -name etcdctl
+cd /etc/kubernetes/pki/
+ETCDCTL_API=3 /data/docker/overlay2/93bc807c1818bcc408e7beabea91e3db2080a593051fa89a43ff5b3256d99fad/merged/usr/local/bin/etcdctl --cacert=ca.crt --cert=server.crt --key=server.key --endpoints=[127.0.0.1:2379] snapshot save snapshotdb
 ```
 
 # 容器安全配置
@@ -56,6 +66,37 @@ spec:
     runAsUser: 1000
     runAsGroup: 3000
     fsGroup: 2000
+```
+
+```
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: tekton-pipelines
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  volumes:
+  - 'emptyDir'
+  - 'configMap'
+  - 'secret'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    rule: 'RunAsAny'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'MustRunAs'
+    ranges:
+    - min: 1
+      max: 65535
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+    - min: 1
+      max: 65535
 ```
 
 # deployment 滚动升级，暂停， 回滚
@@ -119,8 +160,10 @@ kubectl run busyboxy --image=busyboxy
 ```
 kubectl  config set-cluster
 ```
-```
+
+
 # csr
+```
 tls bootstrap 
     kubelet sent token to api-server
     rbac--- csr
@@ -157,28 +200,55 @@ kubectl logs -f pod
 # if network not work, ssh to node
 docker logs -f containerID
 ```
+
 ## 4. waiting
 ```
 check imagePullSecret, imagePullPolicy
 ```
 
 
-
-
-
-10. service 异常排查
-10.1 域名
+# 10. service 异常排查
+## 10.1 域名
     nslookup 判断域名解析是否正常
-10.2 Endpoint
+
+# 10.2 Endpoint
+```
     kubectl -n ${ns} get endpoints ${service-name}
     kubectl -n ${ns} get pods --selector=${service-selector}
     query pod status 
     query service port isMatch pod port
 ipvsadm -ln
+```
 
 
+# static pod
+```
+# 1.进入 wk8s-node-1 节点
+ssh wk8s-node-1
+ 
+# 2. 在/etc/kubernetes/manifests 定义pod的yaml文件
+#使用下面的参考命令生成pod文件
+kubectl run myservice --image=nginx --generator=run-pod/v1 --dry-run -o yaml >21.yml
+ 
+# 3. 在 wk8s-node-1 节点上配置kubelet 
+# 3.1 方式一：编辑kubelet配置（ /usr/lib/systemd/system/kubelet.service.d）
+# 添加参数 --pod-manifest-path=/etc/kubernetes/manifests 
+ 
+KUBELET_ARGS="--cluster-dns=10.254.0.10 --cluster-domain=kube.local --pod-manifest-path=/etc/kubernetes/manifests"
+ 
+# 3.2 方式二： 在kubelet配置（--config=/var/lib/kubelet/config.yaml）文件中
+# 添加   staticPodPath: /etc/kubernetes/manifests
+ 
+ 
+#4. 重启服务
+systemctl daemon-reload
+systemctl restart kubelet
+systemctl enable kubelet
 
+```
 
+# 考试真题
+1. https://blog.csdn.net/fly910905/article/details/103652034?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-8&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-8
 
 ### reference
 - https://www.jianshu.com/p/629525af31c4

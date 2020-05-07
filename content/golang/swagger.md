@@ -9,10 +9,26 @@ draft: true
 docker run -d -p 8081:8080 swaggerapi/swagger-editor
 ```
 
-####
+#### sample yaml
+```
+swagger: "2.0"
 
+info:
+  version: 1.0.0
+  title: Simple API
+  description: A simple API to learn how to write OpenAPI Specification
 
-#### 
+schemes:
+  - https
+host: simple.api
+basePath: /openapi101
+
+paths: {}
+```
+
+#### 懒人必备
+[Generate a spec from source](https://github.com/go-swagger/go-swagger#generate-a-spec-from-source),即通过源码生成文档，很符合我的需求。
+
 
 
 #### auto generate doc
