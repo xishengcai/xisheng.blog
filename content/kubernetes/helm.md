@@ -1,5 +1,5 @@
 ---
-title: "helm 入门实践"
+title: "helm 实践"
 date: 2019-10-04T16:10:09+08:00
 draft: false
 ---

@@ -65,6 +65,19 @@ what is HPA
 
 https://github.com/kubernetes-sigs/metrics-server
 
+```yaml
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
+```
+
+安装后会报错，修改成如下参数
+```yaml
+      containers:
+      - args:
+        - --cert-dir=/tmp
+        - --kubelet-insecure-tls
+        - --secure-port=4443
+        - --kubelet-preferred-address-types=InternalIP
+```
 **deploy one deployment**
 ```shell script
 kubectl run php-apache --image=k8s.gcr.io/hpa-example --requests=cpu=200m --expose --port=80

@@ -1,3 +1,9 @@
+---
+title: "kubernetes 集群证书制作"
+date: 2020-3-26T09:05:09+08:00
+draft: false
+---
+```shell script
 #!/bin/bash
 
 rm -rf /root/ssl
@@ -309,7 +315,7 @@ kubectl config set current-context system:kube-controller-manager@kubernetes  \
   --user=system:controller-manager \
   --kubeconfig=kube-controller-manager.conf
 
-
+```
 
 
 
