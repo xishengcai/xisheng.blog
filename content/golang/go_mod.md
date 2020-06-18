@@ -1,5 +1,5 @@
 ---
-title: "Go_mod"
+title: "go mod"
 date: 2019-12-30T09:06:27+08:00
 draft: false
 ---

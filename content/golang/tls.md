@@ -1,5 +1,5 @@
 ---
-title: "TLS and golang"
+title: "TLS and Golang"
 date: 2020-6-18T17:24:33+08:00
 draft: false
 ---
@@ -190,6 +190,7 @@ func wrap(err error, resp *http.Response) Response {
 
 ## trouble shouting
 - 1.x509: cannot validate certificate for 1.1.1.1 because it doesn't contain any IP SANs
+
 解决方案一：
 ```shell script
 echo "1.1.1.1  test.com" > /etc/hosts
@@ -202,9 +203,9 @@ client use 域名调用
 ```shell script
 openssl genrsa -out server.key 2048
  
-openssl req -new -key server.key -subj "/CN=10.30.0.163" -out server.csr
+openssl req -new -key server.key -subj "/CN=1.1.1.1" -out server.csr
  
-echo subjectAltName = IP:10.30.0.163 > extfile.cnf
+echo subjectAltName = IP:1.1.1.1 > extfile.cnf
  
 openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -extfile extfile.cnf -out server.crt -days 5000
 ```
@@ -215,6 +216,6 @@ openssl x509 -in ./server.crt -noout -text
 ![image](https://xisheng.vip/images/tls-altName.png)
 
 
-##link
+## link
 - http://singlecool.com/2017/10/21/TLS-Go/
 - https://blog.csdn.net/min19900718/article/details/87920254?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase
