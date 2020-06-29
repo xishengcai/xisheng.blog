@@ -1,3 +1,8 @@
+---
+title: "kubernetes context"
+date: 2019-10-04T16:10:09+08:00
+draft: true
+---
 
 # kubernetes config
 当kubectl必须向Kubernetes API发出请求时，它会读取系统上所谓的kubeconfig文件，以获取它需要访问的所有连接参数并向API服务器发出请求。
