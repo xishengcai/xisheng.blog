@@ -43,7 +43,7 @@ systemctl stop kubelet docker
 ## etcd restore data
 ```
 rm -rf /var/lib/etcd
-etcdctl snapshot restore /backup/backup.db --data-dir /var/lib/etcd
+etcdctl snapshot restore /backup/backup.db --data-dir=/var/lib/etcd
 ```
 
 ## restart kubelet and docker
@@ -55,7 +55,7 @@ kubectl get nodes
 ## 在master节点上stop kubelet and docker
 ```
 rm -rf /var/lib/etcd
-etcdctl snapshot restore /backup/backup.db -data-dir /var/lib/etcd
+etcdctl snapshot restore /backup/backup.db --data-dir=/var/lib/etcd
 ```
 
 ## restart kubelet and docker
