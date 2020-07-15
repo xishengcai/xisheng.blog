@@ -43,7 +43,7 @@ systemctl stop kubelet docker
 ## etcd restore data
 ```
 rm -rf /var/lib/etcd
-etcdctl snapshot restore /backup/backup.db -data-dir /var/lib/etcd
+etcdctl snapshot restore /backup/backup.db --data-dir /var/lib/etcd
 ```
 
 ## restart kubelet and docker
@@ -62,6 +62,63 @@ etcdctl snapshot restore /backup/backup.db -data-dir /var/lib/etcd
 ```
 systemctl start kubelet docker
 kubectl get nodes
+```
+
+## cronjob
+```
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: etcd-backup-test
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 1
+  schedule: "0 */1 * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+            - name: etcd
+              image: registry.aliyuncs.com/launcher/etcd:3.3.10
+              command:
+                - etcdctl
+                - snapshot
+                - save
+                - /snapshots/snapshot.db
+              env:
+                - name: ETCDCTL_API
+                  value: "3"
+                - name: ETCDCTL_ENDPOINTS
+                  value: "https://127.0.0.1:2379"
+                - name: ETCDCTL_CACERT
+                  value: "/etc/kubernetes/pki/etcd/ca.crt"
+                - name: ETCDCTL_CERT
+                  value: "/etc/kubernetes/pki/etcd/peer.crt"
+                - name: ETCDCTL_KEY
+                  value: "/etc/kubernetes/pki/etcd/peer.key"
+              volumeMounts:
+                - mountPath: /etc/kubernetes/pki/etcd
+                  name: etcd-certs
+                - mountPath: /snapshots
+                  name: snapshots
+          volumes:
+            - name: etcd-certs
+              hostPath:
+                path: /etc/kubernetes/pki/etcd
+                type: Directory
+            - name: snapshots
+              hostPath:
+                path: /backup
+                type: Directory
+          hostNetwork: true
+          nodeSelector:
+            node-role.kubernetes.io/master: ""
+          tolerations:
+            - operator: Exists
+          restartPolicy: Never
 ```
 
 
