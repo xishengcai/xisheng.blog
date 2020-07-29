@@ -120,9 +120,6 @@ spec:
             - operator: Exists
           restartPolicy: Never
 ```
-
-
-
-
-
-
+# link
+- https://cloud.google.com/anthos/gke/docs/on-prem/archive/1.2/how-to/backing-up?hl=zh-cn
+- https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/recovery.md

@@ -4,6 +4,83 @@ date: 2020-6-28T16:10:09+08:00
 draft: false
 ---
 
+# 重点参数解读
+- 1.advertise-address
+`向集群成员通知 apiserver 消息的 IP 地址。这个地址必须能够被集群中其他成员访问。如果 IP 地址为空，
+将会使用 --bind-address，如果未指定 --bind-address，将会使用主机的默认接口地址。
+`
+- 2.allow-privileged
+`如果为 true, 将允许特权容器。
+`
+
+- 3.uthorization-mode=Node,RBAC
+`在安全端口上进行权限验证的插件的顺序列表。以逗号分隔的列表，包括：AlwaysAllow,AlwaysDeny,ABAC,Webhook,RBAC,Node.
+（默认值 "AlwaysAllow"）
+`
+
+- 4.client-ca-file=/etc/kubernetes/pki/ca.crt
+`如果设置此标志，对于任何请求，如果存包含 client-ca-file 中的 authorities 签名的客户端证书，将会使用客户端证书中的 
+CommonName 对应的身份进行认证。
+`
+
+- 5.enable-admission-plugins=NodeRestriction
+`激活准入控制插件
+ AlwaysAdmit, AlwaysDeny, AlwaysPullImages, DefaultStorageClass, DefaultTolerationSeconds, 
+ DenyEscalatingExec, DenyExecOnPrivileged, EventRateLimit, ExtendedResourceToleration,
+ ImagePolicyWebhook, LimitPodHardAntiAffinityTopology, LimitRanger, 
+ MutatingAdmissionWebhook, NamespaceAutoProvision, NamespaceExists, NamespaceLifecycle, 
+ NodeRestriction, OwnerReferencesPermissionEnforcement, PersistentVolumeClaimResize, 
+ PersistentVolumeLabel, PodNodeSelector, PodPreset, PodSecurityPolicy, PodTolerationRestriction,
+ Priority, ResourceQuota, SecurityContextDeny, ServiceAccount, StorageObjectInUseProtection, 
+ TaintNodesByCondition, ValidatingAdmissionWebhook.
+`
+ 
+- 6.enable-bootstrap-token-auth=true
+`启用此选项以允许 'kube-system' 命名空间中的 'bootstrap.kubernetes.io/token' 类型密钥可以被用于 TLS 的启动认证。
+`
+
+- 7.etcd-cafile=/etc/kubernetes/pki/etcd/ca.crt
+`用于保护 etcd 通信的 SSL CA 文件
+`
+ 
+- 8.etcd-certfile=/etc/kubernetes/pki/apiserver-etcd-client.crt
+`用于保护 etcd 通信的的 SSL 证书文件`
+
+- 9.etcd-keyfile=/etc/kubernetes/pki/apiserver-etcd-client.key
+`用于保护 etcd 通信的 SSL 密钥文件`
+ 
+- 10.etcd-servers=https://127.0.0.1:2379
+`连接的 etcd 服务器列表 , 形式为（scheme://ip:port)，使用逗号分隔。`
+ 
+- 11.insecure-port=0
+`用于监听不安全和为认证访问的端口。这个配置假设你已经设置了防火墙规则，使得这个端口不能从集群外访问。对集群的公共地址的 443
+ 端口的访问将被代理到这个端口。默认设置中使用 nginx 实现。（默认值 8080）`
+
+- 13.kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+`用于 kubelet 连接的首选 NodeAddressTypes 列表。 ( 默认值[Hostname,InternalDNS,InternalIP,ExternalDNS,ExternalIP])
+`
+
+- 17.requestheader-allowed-names=front-proxy-client
+`使用 --requestheader-username-headers 指定的，允许在头部提供用户名的客户端证书通用名称列表。如果为空，任何通过 
+--requestheader-client-ca-file 中 authorities 验证的客户端证书都是被允许的。`
+
+- 19.requestheader-extra-headers-prefix=X-Remote-Extra-
+`用于检查的请求头的前缀列表。建议使用 X-Remote-Extra-。`
+ 
+- 20.requestheader-group-headers=X-Remote-Group
+`用于检查群组的请求头列表。建议使用 X-Remote-Group.`
+
+- 21.requestheader-username-headers=X-Remote-User
+`用于检查用户名的请求头列表。建议使用 X-Remote-User。`
+
+- 23.service-account-key-file=/etc/kubernetes/pki/sa.pub
+`包含 PEM 加密的 x509 RSA 或 ECDSA 私钥或公钥的文件，用于验证 ServiceAccount 令牌。如果设置该值，--tls-private-key-file 将会被使用。
+指定的文件可以包含多个密钥，并且这个标志可以和不同的文件一起多次使用。`
+
+- 24.service-cluster-ip-range=20.96.0.0/12
+` CIDR 表示的 IP 范围，服务的 cluster ip 将从中分配。 一定不要和分配给 nodes 和 pods 的 IP 范围产生重叠。`
+
+
 Generic flags:
 
     --advertise-address ip                                                                                                                           
