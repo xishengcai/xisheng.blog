@@ -113,21 +113,21 @@ spec:
               replicaCount: 2
 ```
 ## 4.oam-kubernetes-runtime 工作流程
-### 1.注册 trait 和 workload
+### 4.1 注册 trait 和 workload
 通过 TraitDefinition 和 WorkloadDefinition 可以注册运维特征和工作负载，这里的trait可以是oam-kubernetes-runtime提供manualscalertraits，
 也可以是你自己写的trait。 workloadDefinition 可以是deployment， statefulSet 或者是 oam-kubernetes-runtime提供的ContainerizedWorkload
 
-### 2.component 配置workload
+### 4.2component 配置workload
 一个component只能配置一个workload
 
 假设你的component是一个deployment， 那么在component.spec里面填写deployment即可
 
-### 3.applicationComponentConfig（简称appConfig）
+### 4.3applicationComponentConfig（简称appConfig）
 应用配置（appConfig）创建后可以实例化所有组件（component）
 
 这里的应用配置可以看成是多个组件组成的应用。
 
-appConfig 协调器工作原理：
+**appConfig 协调器工作原理**：
 - 1. 转化并创建 workload对象， 如果 workload 是 ContainerizedWorkload， 则ContainerizedWorkload的控制器会根据其对象定义创建deployment和service。
 - 2. 转化并创建 trait， trait 控制器发现被创建的trait，根据trait定义的属性修改workload（比如manualscalertrait控制器会去修改workload的spec.replicas)
 - 3. get all workload and patch scope （比如healthScope 会去查询workload，如果都查询到了，则修改healthScope对象为health。
