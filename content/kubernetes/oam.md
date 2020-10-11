@@ -161,7 +161,7 @@ spec:
 
 ## 6. 还需要添加的特性及改善点
 - volumeTrait （实现WorkloadDefinition的多态）
-- 4.2 config && secret mount （kubevela在实现中）
-- 4.3 health scope 缺少对资源对象的状态检查
+- config && secret mount （kubevela在实现中）
+- health scope 缺少对资源对象的状态检查
 
 
