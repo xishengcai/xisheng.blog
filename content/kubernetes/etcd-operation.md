@@ -1,5 +1,5 @@
 ---
-title: "etcd operation in kubernets"
+title: "etcd operation in kubernetes"
 date: 2020-03-12T10:19:04+08:00
 draft: false
 ---

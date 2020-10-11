@@ -1,6 +1,12 @@
+---
+title: "Tekton"
+date: 2020-10-8T10:19:04+08:00
+draft: true
+---
 
 # CICD： Tekton Pipline 入门
-Tekton 是 Google 开源的 Kubernetes 原生CI/CD 系统, 功能强大扩展性强. 前身是 Knavite 里的 build-pipeline 项目, 后期孵化成独立的项目. 并成为 CDF 下的四个项目之一, 其他三个分别是 Jenkins, Jenkins X, Spinnaker
+Tekton 是 Google 开源的 Kubernetes 原生CI/CD 系统, 功能强大扩展性强. 前身是 Knavite 里的 build-pipeline 项目,
+ 后期孵化成独立的项目. 并成为 CDF 下的四个项目之一, 其他三个分别是 Jenkins, Jenkins X, Spinnaker
 
 # CRD 介绍
 - Task: 构建任务, 可以定义一些列的 steps. 每个 step 由一个 container 执行.
