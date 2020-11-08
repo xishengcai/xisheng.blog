@@ -1,3 +1,9 @@
+---
+title: "Kubernetes client"
+date: 2021-11-81T16:08:36+08:00
+draft: false
+---
+
 # k8s client 使用随笔
 ##1.  k8s.io/client-go
 client-go 项目有4种类型的客户端
