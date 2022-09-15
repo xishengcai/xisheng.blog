@@ -327,6 +327,7 @@
     - [Cat](blog/效率/cat.md)
     - [Docker Volume Clean](blog/效率/docker volume clean.md)
     - [Git Book](blog/效率/git book.md)
+    - [Git Push Use Token](blog/效率/git push use token.md)
     - [Git](blog/效率/git.md)
     - [Linux Command](blog/效率/linux command.md)
     - [Linux 内核](blog/效率/linux 内核.md)

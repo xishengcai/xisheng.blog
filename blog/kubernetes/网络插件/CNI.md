@@ -409,3 +409,12 @@ CNI的设计能够提供给不同插件相互组合的机会，比如在Main插�
 - [CNM design](https://link.zhihu.com/?target=https%3A//github.com/docker/libnetwork/blob/master/docs/design.md)
 - [introduction-to-cni](https://link.zhihu.com/?target=https%3A//kccncna19.sched.com/event/Uaif/introduction-to-cni-the-container-network-interface-project-bryan-boreham-weaveworks-dan-williams-red-hat)
 
+
+
+
+
+
+
+何战峰： 有kubernetes CNI 开发经验， k8s 2年，golang开发经验5年，有算法基础，  开发能力较强，有一定的架构设计能力。   可胜任高级开发
+
+江志畅：无计算机理论基础，业务开发场景较为单一，表达能力欠佳。  不通过
