@@ -184,13 +184,3 @@ systemctl enable kubelet
 - https://www.jianshu.com/p/629525af31c4
 - https://github.com/walidshaari/Kubernetes-Certified-Administrator
 
-
-
-
-
-helm upgrade drone \
-      --reuse-values \
-      --set 'sourceControl.provider=github' \
-      --set 'sourceControl.github.clientID=5f2f26363e1a11e43f11' \
-      --set 'sourceControl.secret=71e854a3b433470a76ebf25d16da6fcee6ede26d' \
-      stable/drone

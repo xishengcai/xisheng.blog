@@ -1,3 +1,4 @@
+```bash
 FROM node:8.5-alpine
 
 MAINTAINER EXP <caixisheng>
@@ -25,3 +26,4 @@ COPY . .
 
 # 安装完成后打印 gitbook 的帮助文档
 CMD ["gitbook", "serve"]
+```
