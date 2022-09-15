@@ -1,12 +1,12 @@
-##  Karmada
+[toc]
+
+#  Karmada
 
 [Kamada](https://github.com/karmada-io/karmada) 是华为主导的开源 kubernetes 多云容器编排管理系统，可以跨多个kubernets集群和云运行你的云原生应用程序，而无需更改应用程序。通过kubernetes原声API并提供高级调度功能，Karmada可以实现真正的开放式多云集群管理。
 
 
 
-
-
-# 1. 特性
+## 1. 特性
 
 - 兼容k8s 原生API
 - 开箱即用
@@ -71,7 +71,7 @@ ETCD存储karmada API 对象，API 服务是其他组件通信的REST 终端，k
 
 
 
-# 资源分发流程
+## 3. 资源分发流程
 
 **基本概念**
 
@@ -82,3 +82,18 @@ ETCD存储karmada API 对象，API 服务是其他组件通信的REST 终端，k
 
 
 ![image-20220623092105072](https://soft-package-xisheng.oss-cn-hangzhou.aliyuncs.com/picture/diary/image-20220623092105072.png)
+
+## 4. 重要特性
+
+
+
+
+
+## 5. roadmap
+
+
+
+## 6. issue
+
+
+

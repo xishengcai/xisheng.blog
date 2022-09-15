@@ -22,21 +22,20 @@ rs.initiate({
 
 ```json
 rs.reconfig({_id: "rs",
-            version: 2,
+            version: 4,
             protocolVersion: 1,
             members: [
-                    { _id: 0, host : "mongo-rs-0.mongo-rs-svc.test-345627352593600512.svc.cluster.local:27017" },
-	           { _id: 1, host : "mongo-rs-1.mongo-rs-svc.test-345627352593600512.svc.cluster.local:27017" },
-	           { _id: 2, host : "mongo-rs-2.mongo-rs-svc.test-345627352593600512.svc.cluster.local:27017" }
+           	 	{ _id: 0, host : "mongo-rs-0.mongo-rs-svc:27017" },
+              { _id: 1, host : "mongo-rs-1.mongo-rs-svc:27017" },
              ]}, {"force":true});
 ```
 
 
 
-add new node
+### add new node
 
 ```
-rs.add({_id: 2, host: "mongo-rs-2.mongo-rs-svc.test-345627352593600512.svc.cluster.local:27017", priority: 0, hidden: true})
+rs.add( { host: "mongo-rs-0.mongo-rs-svc:27017", priority: 6, votes: 0,hidden: true }
 ```
 
 
@@ -108,3 +107,10 @@ Address 1: 10.0.1.45 10-0-1-45.lsh-mcp-mongo.322488871377965056.svc.cluster.loca
 mongo localhost:27017/admin -u user -p password
 ```
 
+
+
+## 使用场景
+
+### mongodb 重启后服务初始化
+
+解决方案： 在原先的master 节点， rs.add("host:port")

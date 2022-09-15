@@ -906,4 +906,6 @@ WorkerPoolHeartbeat represents the heartbeat from a worker pool. WorkerPool's wr
 - [worker.go](https://github.com/gocraft/work/blob/v0.5.1/worker.go)
 - [worker_pool.go](https://github.com/gocraft/work/blob/v0.5.1/worker_pool.go)
 
-## 
+
+
+王镇： 221学校，烽火科技 3年研发，华为4年工作经验，2年kubernetes 相关组件开发经验，了解并修改过kubernetes部分源代码，算法掌握还可以，期望薪资不低于25.  --- 可以压价谈谈。
