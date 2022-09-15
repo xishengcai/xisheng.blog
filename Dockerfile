@@ -26,7 +26,7 @@ COPY . .
 
 RUN sed -i 's/\[toc\]/<!-- toc -->/g' *.md &&\
 gitbook install &&\
-gitbook build &&
+gitbook build
 
 
 # 安装完成后打印 gitbook 的帮助文档
