@@ -19,6 +19,7 @@
         "expandable-chapters",
         "toggle-chapters",
         "theme-comscore",
+        "chapter-fold",
         "-lunr",
         "-search",
         "-highlight",
