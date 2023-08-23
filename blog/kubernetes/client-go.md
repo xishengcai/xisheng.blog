@@ -8,7 +8,7 @@ client-go 项目有4种类型的客户端
 - RestClient      rest.RESTClient
 RESTClient是最基础的客户端RESTClient对HTTP Request进行了封装，实现了RESTful风格的API。
 ClientSet，DynamicClient，DiscoveryClient客户端都是基于RESTClient实现的。
-```
+```go
 package main
 import (
 	"flag"
@@ -48,7 +48,7 @@ func main() {
 
 - ClientSet      *kubernetes.Clientset
 ClientSet 是在RESTClient基础上封装了对Resource和Version的管理方法。每一个Resource可以理解为一个客户端，而ClientSet则是多个客户端的集合，每一个Resource和Version都以函数的方式暴露给开发者。ClientSet只能够处理Kubernetes内置资源，他是通过Client-go代码生成器生成的。
-```
+```go
 package main
 
 import (
@@ -78,7 +78,7 @@ func main() {
 
 - DynamicClient   dynamic.Interface
 DynamicClient与ClientSet最大的不同之处是，ClientSet仅能访问Kubernetes自带的资源（即client集合哪的资源）， 而不能直接访问CRD自带的资源。DynamicClient能过处理Kubernetes中的所有资源对象，包括Kubernetes内置资源与 CRD自定义资源。
-```
+```go
 package main
 
 import (

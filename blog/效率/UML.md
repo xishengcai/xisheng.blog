@@ -135,6 +135,4 @@ http://smartlife.blog.51cto.com/1146871/284874
 附录
 --------------------
 
-在EA中定义一个抽象类（其版型为《abstract》)
-
-.. image:: /_static/uml_AbatractClass.jpg
+在EA中定义一个抽象类（其版型为《abstract》

@@ -35,7 +35,7 @@ rs.reconfig({_id: "rs",
 ### add new node
 
 ```
-rs.add( { host: "mongo-rs-0.mongo-rs-svc:27017", priority: 6, votes: 0,hidden: true }
+rs.add( { host: "mongo-rs-2.mongo-rs-svc:27017", priority: 0, votes: 0,hidden: true }  10.168.12.20
 ```
 
 
@@ -114,3 +114,25 @@ mongo localhost:27017/admin -u user -p password
 ### mongodb 重启后服务初始化
 
 解决方案： 在原先的master 节点， rs.add("host:port")
+
+
+
+
+
+本周工作：
+
+1. 修复helm-operator 非安全证书的https charts 包bug
+2. 前后端联调：获取所有资源yaml及工作负载状态
+3. 完成helm 升级
+4. 面试golang 超聚变项目候选人
+5. 代码codereview
+
+
+
+下周功能：
+
+1. 完成helm 回滚
+2. 修复安全漏洞
+
+3. 测试 pod webshell 和实时日志功能
+4. 代码cdoereview

@@ -1,3 +1,4 @@
+```
 FROM node:12.18.1-alpine
 
 MAINTAINER EXP <caixisheng>
@@ -24,10 +25,8 @@ WORKDIR $BOOKDIR
 COPY . .
 
 
-RUN sed -i 's/\[toc\]/<!-- toc -->/g' *.md &&\
-gitbook install &&\
-gitbook build
-
+RUN sed -i 's/\[toc\]/<!-- toc -->/g' *.md && gitbook build
 
 # 安装完成后打印 gitbook 的帮助文档
 CMD ["gitbook", "serve"]
+```

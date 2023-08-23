@@ -39,11 +39,3 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub root@xxx.xxx.xxx.xxx
 
 
 
-iptables -t nat -A PREROUTING -p tcp --dport 5443 -j REDIRECT --to-port 5443
-
-
-
-```
-iptables -t nat -A PREROUTING -p tcp --dport 5443 -j DNAT --to-destination 10.168.12.195:5443
-iptables -t nat -A POSTROUTING -p tcp  --dport 5443 -j SNAT --to-source 10.168.12.195
-```

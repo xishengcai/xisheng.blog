@@ -127,5 +127,13 @@ git push --force-with-lease origin master
 
 
 
+## 删除未跟踪文件
+
+```
+git clean -fd
+```
+
+
+
 
 

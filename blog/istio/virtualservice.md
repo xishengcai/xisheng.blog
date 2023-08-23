@@ -206,3 +206,64 @@ Q3.  [2020-12-25T12:36:09.713Z] "GET /tomcat.png HTTP/1.1" 404 NR "-" 0 0 0 - "1
 ### link
 [入门到放弃](https://my.oschina.net/u/4393870/blog/4283422)
 [网络故障排查](https://istio.io/v1.2/zh/docs/ops/traffic-management/troubleshooting/)
+
+
+
+
+
+
+
+```do 
+connector:
+  name: lstack-production-62de1a9fd0b8414ab6595fe1
+  maxConnection: 0
+  providerSource: db
+  version: release-V0.8.0
+  serverAddr: https://lstack.lstack-pre.cn
+  database:
+    type: mysql
+    mysql:
+      username: idp
+      password: Nz9Vy4EQ75NLseuYTien
+      host: 10.168.12.229
+      database: idp
+      port: 3306
+  externalPlugins:
+  - name: tekton
+    version: 0.20.1
+    chartAddr: https://lstack-helm-chart.oss-cn-hangzhou.aliyuncs.com/product/charts/tekton-0.20.1.tgz
+    namespace: lstack-system
+    readinessProbe:
+      targets:
+      - resource: "Deployment"
+        Name: "tekton-pipelines-controller"
+    values: '{}'
+  - name: oam-kubernetes-runtime
+    chartAddr: https://lstack-helm-chart.oss-cn-hangzhou.aliyuncs.com/product/charts/oam-kubernetes-runtime-1.0.81.tgz
+    version: 1.0.81
+    namespace: lstack-system
+    values: '{}'
+    readinessProbe:
+      targets:
+      - resource: "Deployment"
+        Name: "oam-kubernetes-runtime"
+  - name: idp-logagent
+    chartAddr: https://lstack-helm-chart.oss-cn-hangzhou.aliyuncs.com/product/charts/idp-logagent-0.1.0.tgz
+    version: 0.1.0
+    namespace: lstack-idp
+    values: '{"env":{"httpEndpointPrefix": "https://lstack.lstack-pre.cn" }}'
+    readinessProbe:
+      targets:
+      - resource: "DaemonSet"
+        Name: "idp-logagent"
+  - name: helm-operator
+    chartAddr: https://lstack-helm-chart.oss-cn-hangzhou.aliyuncs.com/product/charts/helm-operator-0.7.3.tgz
+    version: 0.7.3
+    namespace: lstack-system
+    values: '{}'
+    readinessProbe:
+      targets:
+      - resource: "Deployment"
+        Name: "helm-operator"you what 
+```
+

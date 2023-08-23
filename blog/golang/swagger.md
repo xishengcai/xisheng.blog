@@ -41,6 +41,12 @@ Swagger 是一个规范和完整的框架，用于生成、描述、调用和可
 
 
 
+
+
+
+
+curl --location --request POST 'http://10.247.116.62:9090/api/lsh/idp/base/rbac/v1/res_group/trim'
+
 #### auto generate doc
 
 ```bash

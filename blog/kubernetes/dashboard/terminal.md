@@ -55,7 +55,3 @@ func CreateAttachHandler(path string) http.Handler
 ```
 
 
-
-2021/10/18 产品例会 CHS 组遗留问题： 思考对中小型开发团队，CNOPS如何简化操作流程？
-
-预计解决时间 10月25日
