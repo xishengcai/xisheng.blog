@@ -1,4 +1,4 @@
-bloomfilter
+# bloomfilter
 
 布隆过滤器，是一种节省空间的概率数据结构（就是位图+哈希）。主要的功能是查找一个元素是否在给定的集合中。说它是一种概率数据结构是因为每次对它的查询会返回 2 种结果；一种是“可能在集合中”，也就是说它可能会误报，这个误报是有一定概率的。
 
@@ -18,7 +18,7 @@ bloomfilter
 
 查询的时候把这个元素作为 K 个哈希函数的输入，得到 K 个数组的位置。如果这些位置中有任意一个是 0，说明元素肯定不在集合中。如果这些位置全部为 1，那么该元素很可能是在集合中，因为也有可能这些位置是被其他元素设置的。
 
-![image-20220515110227112](/Users/xishengcai/Library/Application Support/typora-user-images/image-20220515110227112.png)
+![image-20220515110227112](https://soft-package-xisheng.oss-cn-hangzhou.aliyuncs.com/picture/diary/image-20220515110227112.png)
 
 通过计算 4 G 空间就基本能满足需求了。我们总结一下布隆过滤器的优缺点：
 

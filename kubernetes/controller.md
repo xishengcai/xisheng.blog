@@ -54,7 +54,7 @@ spec:
     
 
 ### 3. Write your customer controller
-![client-go](http://xisheng.vip/images/clinet-go.jpg)
+![img](./2344773-20230227230647754-846028579.png)
 
 注意: 这张图分为两部分,黄色图标是开发者需要自行开发的部分，而其它的部分是client-go已经提供的，直接使用即可。
 
