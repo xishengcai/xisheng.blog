@@ -1,10 +1,7 @@
 ## [最短路径—Dijkstra算法和Floyd算法](https://www.cnblogs.com/biyeymyhjob/archive/2012/07/31/2615833.html)
 
- 
 
 **注意：以下代码 只是描述思路，没有测试过！！**
-
- 
 
 **Dijkstra算法**
 
@@ -36,11 +33,8 @@ d.重复步骤b和c直到所有顶点都包含在S中。
 
 ![img](https://pic002.cnblogs.com/images/2012/426620/2012073019540660.gif)
 
- 
-
 3.算法代码实现：
 
- 
 
 [![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
 

@@ -7,7 +7,6 @@
 sshpass -p [password] ssh  -o "StrictHostKeyChecking no" root@172.16.11.134
 
 
-
 ```bash
 for i in  host1 host2 ; do
   sshpass -p password ssh -tt root@$i << remote
