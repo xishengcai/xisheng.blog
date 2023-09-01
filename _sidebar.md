@@ -1,7 +1,7 @@
 <!-- _sidebar.md -->
 
 
-* 算法
+* [算法](./algorithm)
   * [2.两数之和](./algorithm/2.两数之和.md)
   * [45.跳跃游戏II](./algorithm/动态规划/45.跳跃游戏II.md.md)
   * [55.跳跃游戏](./algorithm/动态规划/55.跳跃游戏.md)
@@ -14,11 +14,12 @@
   * [208.前缀树](./algorithm/208.前缀树.md)
   * [57.插入区间](./algorithm/57.插入区间.md)
   * [73.矩阵置零](./algorithm/73.矩阵置零.md)
+  * [199.二叉树的右视图](./algorithm/199.二叉树的右视图.md)
   * [快速排序](./algorithm/排序算法/快速排序.md)
   * [heap](./algorithm/排序算法/heap.md)
   * [最小生成树](./algorithm/贪心算法/最小生成树.md)
   * [lru](./algorithm/LRU%20&&%20LFU.md)
-*kubernetes
+* kubernetes
   * [controller](./kubernetes/controller.md)
   * [informer](./kubernetes/K8s源码/informer.md)
   * [informer2](./kubernetes/K8s源码/informer2.md)
@@ -52,6 +53,7 @@
   * [证书制作](./效率/证书制作.md)
   * [科学上网](./效率/科学上网.md)
   * [内网穿透](./效率/内网穿透.md)
-* 软考高级
-  * [数据库-范式](./软考高级/数据库-范式.md)
-  * [软件工程](./软考高级/软件工程.md)
+* 软考
+  * [数据库-范式](./软考/数据库-范式.md)
+  * [软件工程](./软考/软件工程.md)
+  
