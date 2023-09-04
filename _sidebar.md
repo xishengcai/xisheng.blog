@@ -1,7 +1,7 @@
 <!-- _sidebar.md -->
 
 
-* [算法](./algorithm)
+* 算法
   * [2.两数之和](./algorithm/2.两数之和.md)
   * [45.跳跃游戏II](./algorithm/动态规划/45.跳跃游戏II.md.md)
   * [55.跳跃游戏](./algorithm/动态规划/55.跳跃游戏.md)
@@ -10,6 +10,7 @@
   * [39.组合数](./algorithm/回溯算法/39.组合数.md)
   * [40.组合数II](./algorithm/回溯算法/40.组合数II.md)
   * [46.全排列](./algorithm/回溯算法/46.全排列.md)
+  * [131.分割回文](./algorithm/回溯算法/131.分割回文.md)
   * [11.盛最多水的容器](./algorithm/11.盛最多水的容器.md)
   * [208.前缀树](./algorithm/208.前缀树.md)
   * [57.插入区间](./algorithm/57.插入区间.md)
