@@ -16,6 +16,7 @@
   * [57.插入区间](./algorithm/57.插入区间.md)
   * [73.矩阵置零](./algorithm/73.矩阵置零.md)
   * [199.二叉树的右视图](./algorithm/199.二叉树的右视图.md)
+  * [41.缺失的第一个正数](./algorithm/41.缺失的第一个正数.md)
   * [快速排序](./algorithm/排序算法/快速排序.md)
   * [heap](./algorithm/排序算法/heap.md)
   * [最小生成树](./algorithm/贪心算法/最小生成树.md)
