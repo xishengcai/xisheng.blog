@@ -184,7 +184,7 @@ $telepresence leave lsh-mcp-idp-cd
 
 删除telepresence agents and manager，执行后清除所有sidecar，以及traffic-manager控制器，并关闭本地telepresence的后台进程
 
-```
+```gra
 $telepresence uninstall --everything
 Telepresence Network quitting...done
 Telepresence Traffic Manager quitting...done

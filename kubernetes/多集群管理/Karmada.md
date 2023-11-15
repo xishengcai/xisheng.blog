@@ -95,5 +95,13 @@ ETCD存储karmada API 对象，API 服务是其他组件通信的REST 终端，k
 
 ## 6. issue
 
+```
+{"kind":"Deployment","apiVersion":"apps/v1","metadata":{"name":"hello123","namespace":"drs","creationTimestamp":null,"labels":{"app":"hello123"},"annotations":{"app":"hello123"}},"spec":{"selector":{"matchLabels":{"app":"hello123"}},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"hello123"}},"spec":{"containers":[{"name":"nginx","image":"nginx","resources":{"limits":{"cpu":"1500m","memory":"50Mi"},"requests":{"cpu":"1500m","memory":"50Mi"}},"imagePullPolicy":"Always"},{"name":"mysql","image":"registry.cn-hangzhou.aliyuncs.com/launcher/mysql:8.0.18","env":[{"name":"MYSQL_ROOT_PASSWORD","value":"123456"}],"resources":{"limits":{"cpu":"500m","memory":"500Mi"},"requests":{"cpu":"500m","memory":"500Mi"}},"imagePullPolicy":"Always"}],"nodeName":"master"}},"strategy":{}},"status":{}}
+---
+{"kind":"Service","apiVersion":"v1","metadata":{"name":"hello123","namespace":"drs","creationTimestamp":null,"labels":{"app":"hello123"}},"spec":{"ports":[{"name":"nginx","protocol":"TCP","port":80,"targetPort":80},{"name":"mysql","protocol":"TCP","port":3306,"targetPort":3306}],"selector":{"app":"hello123"},"type":"ClusterIP"},"status":{"loadBalancer":{}}}
+---
+
+```
+
 
 

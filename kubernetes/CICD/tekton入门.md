@@ -217,27 +217,7 @@ Waiting for logs to be available...
 [run-test] ok  	_/workspace/repo	0.007s
 ```
 
-### 总结
-
-我们已经在 Kubernetes 集群上成功安装了 Tekton，定义了一个 Task，并通过 YAML 清单和 Tekton CLI 创建 TaskRun 对其进行了测试。在下一部发我们将创建一个任务来构建一个 Docker 镜像，并将其推送到 Docker Hub。最后，我们将创建一个流水线，按顺序运行我们的两个任务（运行应用程序测试，构建和推送）。
-
-参考资料：
-
-- [tekton.dev](https://tekton.dev/)
-- [Creating CI Pipelines with Tekton](https://www.arthurkoziel.com/creating-ci-pipelines-with-tekton-part-1/)
+- https://www.arthurkoziel.com/creating-ci-pipelines-with-tekton-part-1/)
 
 
-
-### 相关文章
-
-- [基于 Jenkins 的 DevOps 流水线实践](https://www.qikqiak.com/post/devops-base-on-jenkins/)
-- [在现有 Kubernetes 集群上安装 KubeSphere](https://www.qikqiak.com/post/install-kubesphere-on-k8s/)
-- [Drone 结合 Helm 部署 Kubernetes 应用](https://www.qikqiak.com/post/drone-with-k8s-3/)
-- [使用 Drone Pipeline 构建 Docker 镜像](https://www.qikqiak.com/post/drone-with-k8s-2/)
-- [使用 Kubernetes Helm 安装 Drone](https://www.qikqiak.com/post/drone-with-k8s-1/)
-- [通过 GitHub OAuth 和 Dex 访问 Kubernetes 集群](https://www.qikqiak.com/post/k8s-auth-via-oidc/)
-- [基于 Jenkins、Gitlab、Harbor、Helm 和 Kubernetes 的 CI/CD(二)](https://www.qikqiak.com/post/complete-cicd-demonstrate-2/)
-- [基于 Jenkins、Gitlab、Harbor、Helm 和 Kubernetes 的 CI/CD(一)](https://www.qikqiak.com/post/complete-cicd-demonstrate-1/)
-- [GitHub CLI 命令行工具使用](https://www.qikqiak.com/post/github-cli-tool-usage/)
-- [加速开发流程的 Dockerfile 最佳实践](https://www.qikqiak.com/post/speed-up-develop-flow-dockerfile-best-practices/)
 
